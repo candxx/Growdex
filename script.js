@@ -29,11 +29,13 @@ const editorPanel = document.getElementById("editor-panel");
 const ingredientRows = document.getElementById("ingredient-rows");
 
 function refreshRecipeSelect() {
-  const current = recipeSelect.value;
-  const names = Object.keys(recipes).sort();
-  recipeSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join("");
-  if (current && names.includes(current)) {
-    recipeSelect.value = current;
+  const target = "Surg E";
+
+  if (recipes[target]) {
+    recipeSelect.innerHTML = `<option value="${target}">${target}</option>`;
+    recipeSelect.value = target;
+  } else {
+    recipeSelect.innerHTML = "";
   }
 }
 
