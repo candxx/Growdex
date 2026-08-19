@@ -29,13 +29,17 @@ const editorPanel = document.getElementById("editor-panel");
 const ingredientRows = document.getElementById("ingredient-rows");
 
 function refreshRecipeSelect() {
-  const target = "Surg E";
+  const current = recipeSelect.value;
+  const names = Object.keys(recipes).sort();
 
-  if (recipes[target]) {
-    recipeSelect.innerHTML = `<option value="${target}">${target}</option>`;
-    recipeSelect.value = target;
+  recipeSelect.innerHTML =
+    `<option value="">-- Pilih item crafting --</option>` +
+    names.map(n => `<option value="${n}">${n}</option>`).join("");
+
+  if (current && names.includes(current)) {
+    recipeSelect.value = current;
   } else {
-    recipeSelect.innerHTML = "";
+    recipeSelect.value = "";
   }
 }
 
@@ -297,7 +301,3 @@ document.getElementById("btn-delete-recipe").addEventListener("click", () => {
 
 refreshRecipeSelect();
 refreshRecipeListButtons();
-if (recipeSelect.options.length > 0) {
-  recipeSelect.value = Object.keys(recipes).sort()[0];
-  renderTree();
-}
