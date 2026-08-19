@@ -33,6 +33,39 @@
       <ul id="shopping-list"></ul>
     </div>
 
+    <div class="profit-panel" id="profit-panel" style="display:none;">
+      <h4>💰 KALKULASI UNTUNG</h4>
+      <div class="profit-row">
+        <label for="sell-price-input">Harga jual (per item)</label>
+        <input type="number" id="sell-price-input" min="0" value="0">
+        <label for="currency-unit" class="unit-label">Satuan</label>
+        <input type="text" id="currency-unit" value="DL">
+      </div>
+      <div class="profit-row">
+        <label for="fee-percent-input">Fee / pajak jual (%)</label>
+        <input type="number" id="fee-percent-input" min="0" max="100" value="0">
+      </div>
+      <div class="profit-summary">
+        <div class="profit-item">
+          <span>Modal (total seed)</span>
+          <strong id="profit-modal">0</strong>
+        </div>
+        <div class="profit-item">
+          <span>Pendapatan</span>
+          <strong id="profit-revenue">0</strong>
+        </div>
+        <div class="profit-item">
+          <span>Profit Kotor</span>
+          <strong id="profit-gross">0</strong>
+        </div>
+        <div class="profit-item">
+          <span>Profit Bersih</span>
+          <strong id="profit-net">0</strong>
+        </div>
+      </div>
+      <p class="profit-note" id="profit-missing-note" style="display:none;">⚠ Ada seed yang belum diisi harga belinya, modal di atas belum akurat. Isi lewat "SET / EDIT RESEP" → tabel harga di bawah.</p>
+    </div>
+
     <div class="editor-toggle">
       <button class="btn secondary" id="btn-toggle-editor">⚙ SET / EDIT RESEP</button>
     </div>
@@ -47,6 +80,12 @@
       <div id="ingredient-rows"></div>
       <button class="btn secondary" id="btn-add-ingredient" type="button">+ TAMBAH BAHAN</button>
 
+      <div class="editor-row price-fields">
+        <label>Harga Beli <input type="number" name="item-buy" id="edit-item-buy" min="0" value="0"></label>
+        <label>Harga Jual <input type="number" name="item-sell" id="edit-item-sell" min="0" value="0"></label>
+      </div>
+      <p class="editor-note">Harga Beli = kalau item ini seed/bahan mentah yang lo beli. Harga Jual = kalau item ini hasil crafting yang mau lo jual. Isi salah satu atau dua-duanya, bebas.</p>
+
       <textarea id="edit-item-note" class="note-input" placeholder="Catatan (opsional) — misal: cara dapetin, harga, dari event apa, dll."></textarea>
 
       <div class="editor-actions">
@@ -57,6 +96,12 @@
 
       <p class="editor-note">Kosongin "TAMBAH BAHAN" kalau item ini seed mentah (ujung tree, gak butuh bahan lain). Klik nama item di bawah buat edit resep yang udah ada.</p>
       <div class="recipe-list-existing" id="recipe-list-existing"></div>
+
+      <div class="price-table-wrap">
+        <h4>💰 Harga Beli & Jual Semua Item</h4>
+        <p class="editor-note">Semua item yang pernah lo pakai (baik sebagai item utama maupun sebagai bahan) otomatis muncul di sini. Tinggal isi harganya langsung.</p>
+        <div class="price-table" id="price-table"></div>
+      </div>
     </div>
   </div>
 
@@ -75,6 +120,11 @@
 
     <div id="node-ingredient-rows"></div>
     <button class="btn secondary" id="btn-node-add-ingredient" type="button">+ TAMBAH BAHAN</button>
+
+    <div class="editor-row price-fields">
+      <label>Harga Beli <input type="number" name="item-buy" id="node-modal-buy" min="0" value="0"></label>
+      <label>Harga Jual <input type="number" name="item-sell" id="node-modal-sell" min="0" value="0"></label>
+    </div>
 
     <textarea id="node-modal-note" class="note-input" placeholder="Catatan (opsional) — misal: cara dapetin, harga, dari event apa, dll."></textarea>
 
