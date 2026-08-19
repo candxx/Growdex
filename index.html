@@ -6,185 +6,7 @@
 <title>Alur Crafting — Growtopia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --dirt:#4a2f1c;
-    --dirt-dark:#2e1c10;
-    --grass:#5a9c3e;
-    --grass-dark:#3f7028;
-    --sky:#bfe8f5;
-    --gold:#f4b942;
-    --cream:#fbf3df;
-    --stone:#8a8378;
-    --ink:#2a1e12;
-    --white:#fffdf6;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    font-family:'Baloo 2', sans-serif;
-    background: linear-gradient(180deg, var(--sky) 0%, var(--sky) 220px, var(--grass) 220px, var(--grass-dark) 100%);
-    color:var(--ink);
-    min-height:100vh;
-    padding:40px 16px 60px;
-  }
-
-  .wrap{ max-width:1000px; margin:0 auto; }
-
-  .section-head{ text-align:center; margin-bottom:30px; }
-  .section-head .eyebrow{
-    font-family:'Press Start 2P', monospace;
-    font-size:10px;
-    color:var(--grass-dark);
-    background:var(--white);
-    display:inline-block;
-    padding:6px 12px;
-    border-radius:20px;
-    margin-bottom:14px;
-  }
-  .section-head h1{
-    font-family:'Press Start 2P', monospace;
-    font-size:clamp(18px,3.6vw,30px);
-    color:var(--white);
-    -webkit-text-stroke:2.5px var(--dirt-dark);
-    paint-order: stroke fill;
-    line-height:1.5;
-  }
-  .section-head p{ margin-top:14px; font-size:15.5px; color:var(--dirt-dark); max-width:520px; margin-left:auto; margin-right:auto; }
-
-  .recipe-panel{
-    background:var(--dirt);
-    border:5px solid var(--dirt-dark);
-    border-radius:14px;
-    padding:24px;
-    box-shadow:8px 8px 0 var(--dirt-dark);
-  }
-  .recipe-controls{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-    margin-bottom:22px;
-  }
-  .recipe-controls select,
-  .recipe-controls input[type="number"]{
-    padding:10px 12px;
-    border-radius:8px;
-    border:3px solid var(--dirt-dark);
-    font-family:'Baloo 2', sans-serif;
-    font-size:15px;
-    font-weight:600;
-    background:var(--cream);
-  }
-  .recipe-controls select{ flex:1; min-width:180px; }
-  .recipe-controls input[type="number"]{ width:80px; text-align:center; }
-  .btn{
-    font-family:'Press Start 2P', monospace;
-    font-size:10px;
-    padding:11px 16px;
-    background:var(--gold);
-    color:var(--dirt-dark);
-    border:3px solid var(--dirt-dark);
-    border-radius:8px;
-    cursor:pointer;
-    box-shadow:3px 3px 0 var(--dirt-dark);
-    transition:transform .1s ease;
-    white-space:nowrap;
-  }
-  .btn:hover{ transform:translateY(-2px); }
-  .btn:active{ transform:translateY(0); box-shadow:1px 1px 0 var(--dirt-dark); }
-  .btn.secondary{ background:var(--cream); }
-  .btn.danger{ background:#e5654a; color:var(--white); }
-
-  .tree-scroll{ overflow-x:auto; padding:20px 10px 10px; }
-  .tree, .tree ul{ display:flex; justify-content:center; padding-top:22px; position:relative; }
-  .tree{ padding-top:0; }
-  .tree li{
-    display:flex; flex-direction:column; align-items:center;
-    list-style:none; position:relative; padding:22px 12px 0 12px;
-  }
-  .tree li::before, .tree li::after{
-    content:''; position:absolute; top:0; right:50%;
-    border-top:2px solid var(--gold); width:50%; height:22px;
-  }
-  .tree li::after{ right:auto; left:50%; border-left:2px solid var(--gold); }
-  .tree li:only-child::after, .tree li:only-child::before{ display:none; }
-  .tree li:only-child{ padding-top:0; }
-  .tree li:first-child::before, .tree li:last-child::after{ border:0 none; }
-  .tree li:last-child::before{ border-right:2px solid var(--gold); border-radius:0 6px 0 0; }
-  .tree li:first-child::after{ border-radius:6px 0 0 0; }
-  .tree ul::before{
-    content:''; position:absolute; top:0; left:50%;
-    border-left:2px solid var(--gold); width:0; height:22px;
-  }
-  .tree > li{ padding-top:0; }
-  .tree > li::before, .tree > li::after, .tree > li > ul::before{ display:none; }
-
-  .node-box{
-    background:linear-gradient(160deg, #6b4527, #4a2f1c);
-    border:3px solid var(--dirt-dark);
-    border-radius:8px;
-    padding:12px 14px;
-    color:var(--cream);
-    text-align:center;
-    min-width:110px;
-  }
-  .node-box .n-icon{ font-size:26px; display:block; }
-  .node-box .n-name{ font-size:12.5px; font-weight:700; margin-top:4px; line-height:1.2; }
-  .node-box .n-qty{
-    display:inline-block; margin-top:6px; background:var(--gold); color:var(--dirt-dark);
-    font-family:'Press Start 2P', monospace; font-size:9px; padding:2px 6px; border-radius:4px;
-  }
-  .tree-node.leaf .node-box{
-    background:linear-gradient(160deg, var(--grass), var(--grass-dark));
-    box-shadow:0 0 0 2px var(--gold) inset;
-  }
-
-  .shopping-list{
-    margin-top:26px; background:var(--white); border:3px solid var(--dirt-dark);
-    box-shadow:4px 4px 0 var(--dirt-dark); border-radius:10px; padding:18px 20px;
-  }
-  .shopping-list h4{
-    font-family:'Press Start 2P', monospace; font-size:12px; color:var(--dirt-dark); margin-bottom:14px;
-  }
-  .shopping-list ul{ list-style:none; display:flex; flex-wrap:wrap; gap:10px; }
-  .shopping-list li{
-    background:var(--cream); border:2px solid var(--dirt-dark); border-radius:6px;
-    padding:8px 12px; font-weight:700; font-size:14px; display:flex; align-items:center; gap:6px;
-  }
-  .shopping-list li .amt{ font-family:'Press Start 2P', monospace; font-size:10px; color:var(--grass-dark); }
-
-  .editor-toggle{ text-align:center; margin-top:24px; }
-  .editor{
-    display:none; margin-top:18px; background:var(--cream);
-    border:3px solid var(--dirt-dark); border-radius:10px; padding:20px;
-  }
-  .editor.open{ display:block; }
-  .editor h4{ font-family:'Press Start 2P', monospace; font-size:12px; color:var(--dirt-dark); margin-bottom:16px; }
-  .editor-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-  .editor-row input{
-    padding:9px 10px; border-radius:6px; border:2px solid var(--dirt-dark);
-    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:14px;
-  }
-  .editor-row input[name="item-name"]{ flex:1; min-width:140px; }
-  .editor-row input[name="item-icon"]{ width:70px; text-align:center; }
-  .ingredient-row{ display:flex; gap:8px; margin-bottom:8px; align-items:center; }
-  .ingredient-row input[name="ing-name"]{ flex:1; }
-  .ingredient-row input[name="ing-qty"]{ width:70px; text-align:center; }
-  .ingredient-row .rm-ing{
-    background:#e5654a; color:var(--white); border:none; border-radius:6px;
-    width:30px; height:34px; cursor:pointer; font-weight:800;
-  }
-  .editor-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-  .editor-note{ font-size:13px; color:var(--stone); margin-top:10px; line-height:1.5; }
-  .recipe-list-existing{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
-  .recipe-list-existing button{
-    background:var(--white); border:2px solid var(--dirt-dark); border-radius:6px;
-    padding:6px 10px; font-size:13px; font-weight:700; cursor:pointer;
-  }
-  .recipe-list-existing button:hover{ background:var(--sky); }
-
-  footer{ text-align:center; margin-top:40px; font-size:13px; color:var(--dirt-dark); opacity:.8; }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -225,6 +47,8 @@
       <div id="ingredient-rows"></div>
       <button class="btn secondary" id="btn-add-ingredient" type="button">+ TAMBAH BAHAN</button>
 
+      <textarea id="edit-item-note" class="note-input" placeholder="Catatan (opsional) — misal: cara dapetin, harga, dari event apa, dll."></textarea>
+
       <div class="editor-actions">
         <button class="btn" id="btn-save-recipe">💾 SIMPAN RESEP</button>
         <button class="btn danger" id="btn-delete-recipe">🗑 HAPUS RESEP INI</button>
@@ -239,190 +63,27 @@
   <footer>Data resep disimpan otomatis di browser lo (localStorage) — gak ilang pas reload.</footer>
 </div>
 
-<script>
-  const DEFAULT_RECIPES = {
-    "Outie Block": { icon: "🟩", ingredients: [
-      { name: "Pastel Aqua Block", qty: 1 },
-      { name: "Bubble Wrap", qty: 1 }
-    ]},
-    "Pastel Aqua Block": { icon: "🟦", ingredients: [] },
-    "Bubble Wrap": { icon: "🔵", ingredients: [] }
-  };
+<div class="modal-overlay" id="node-modal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" id="node-modal-close">✕</button>
+    <h4 id="node-modal-title">ITEM</h4>
+    <p class="modal-sub">Tambahin bahan buat item ini. Kosongin semua kalau mau jadiin seed mentah lagi.</p>
 
-  let recipes = {};
-  try {
-    const saved = localStorage.getItem("gt_recipes");
-    recipes = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_RECIPES));
-  } catch (e) {
-    recipes = JSON.parse(JSON.stringify(DEFAULT_RECIPES));
-  }
+    <div class="editor-row">
+      <input type="text" name="item-icon" id="node-modal-icon" placeholder="Icon" value="🟩" style="width:70px; text-align:center;">
+    </div>
 
-  function saveRecipes() {
-    localStorage.setItem("gt_recipes", JSON.stringify(recipes));
-  }
+    <div id="node-ingredient-rows"></div>
+    <button class="btn secondary" id="btn-node-add-ingredient" type="button">+ TAMBAH BAHAN</button>
 
-  const recipeSelect = document.getElementById("recipe-select");
-  const recipeQtyInput = document.getElementById("recipe-qty");
-  const treeOutput = document.getElementById("tree-output");
-  const shoppingWrap = document.getElementById("shopping-list-wrap");
-  const shoppingList = document.getElementById("shopping-list");
-  const recipeListExisting = document.getElementById("recipe-list-existing");
-  const editorPanel = document.getElementById("editor-panel");
-  const ingredientRows = document.getElementById("ingredient-rows");
+    <textarea id="node-modal-note" class="note-input" placeholder="Catatan (opsional) — misal: cara dapetin, harga, dari event apa, dll."></textarea>
 
-  function refreshRecipeSelect() {
-    const names = Object.keys(recipes).sort();
-    recipeSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join("");
-  }
+    <div class="editor-actions">
+      <button class="btn" id="btn-node-save">💾 SIMPAN</button>
+    </div>
+  </div>
+</div>
 
-  function refreshRecipeListButtons() {
-    const names = Object.keys(recipes).sort();
-    recipeListExisting.innerHTML = names.map(n =>
-      `<button type="button" data-name="${n}">${recipes[n].icon || "🌱"} ${n}</button>`
-    ).join("");
-    recipeListExisting.querySelectorAll("button").forEach(btn => {
-      btn.addEventListener("click", () => loadRecipeIntoForm(btn.dataset.name));
-    });
-  }
-
-  function buildNode(name, qty) {
-    const r = recipes[name];
-    const isLeaf = !r || !r.ingredients || r.ingredients.length === 0;
-    const icon = r ? (r.icon || "🌱") : "🌱";
-
-    let childrenHTML = "";
-    if (!isLeaf) {
-      childrenHTML = `<ul>${r.ingredients.map(ing =>
-        `<li>${buildNode(ing.name, ing.qty * qty)}</li>`
-      ).join("")}</ul>`;
-    }
-
-    return `
-      <div class="tree-node ${isLeaf ? "leaf" : ""}">
-        <div class="node-box">
-          <span class="n-icon">${icon}</span>
-          <span class="n-name">${name}</span>
-          <span class="n-qty">x${qty}</span>
-        </div>
-      </div>
-      ${childrenHTML}
-    `;
-  }
-
-  function collectLeaves(name, qty, acc) {
-    const r = recipes[name];
-    const isLeaf = !r || !r.ingredients || r.ingredients.length === 0;
-    if (isLeaf) {
-      acc[name] = (acc[name] || 0) + qty;
-      return acc;
-    }
-    r.ingredients.forEach(ing => collectLeaves(ing.name, ing.qty * qty, acc));
-    return acc;
-  }
-
-  function renderTree() {
-    const target = recipeSelect.value;
-    const qty = Math.max(1, parseInt(recipeQtyInput.value) || 1);
-    if (!target || !recipes[target]) {
-      treeOutput.innerHTML = "";
-      shoppingWrap.style.display = "none";
-      return;
-    }
-
-    treeOutput.innerHTML = `<ul class="tree"><li>${buildNode(target, qty)}</li></ul>`;
-
-    const leaves = collectLeaves(target, qty, {});
-    const entries = Object.entries(leaves);
-    if (entries.length === 0) {
-      shoppingWrap.style.display = "none";
-    } else {
-      shoppingList.innerHTML = entries.map(([n, q]) =>
-        `<li>🌱 ${n} <span class="amt">x${q}</span></li>`
-      ).join("");
-      shoppingWrap.style.display = "block";
-    }
-  }
-
-  document.getElementById("btn-show-tree").addEventListener("click", renderTree);
-  recipeSelect.addEventListener("change", renderTree);
-
-  function addIngredientRow(name = "", qty = 1) {
-    const row = document.createElement("div");
-    row.className = "ingredient-row";
-    row.innerHTML = `
-      <input type="text" name="ing-name" placeholder="Nama bahan" value="${name}">
-      <input type="number" name="ing-qty" min="1" value="${qty}">
-      <button type="button" class="rm-ing">✕</button>
-    `;
-    row.querySelector(".rm-ing").addEventListener("click", () => row.remove());
-    ingredientRows.appendChild(row);
-  }
-
-  document.getElementById("btn-add-ingredient").addEventListener("click", () => addIngredientRow());
-
-  document.getElementById("btn-toggle-editor").addEventListener("click", () => {
-    editorPanel.classList.toggle("open");
-  });
-
-  function clearForm() {
-    document.getElementById("edit-item-name").value = "";
-    document.getElementById("edit-item-icon").value = "🟩";
-    ingredientRows.innerHTML = "";
-  }
-  document.getElementById("btn-clear-form").addEventListener("click", clearForm);
-
-  function loadRecipeIntoForm(name) {
-    const r = recipes[name];
-    if (!r) return;
-    document.getElementById("edit-item-name").value = name;
-    document.getElementById("edit-item-icon").value = r.icon || "🟩";
-    ingredientRows.innerHTML = "";
-    (r.ingredients || []).forEach(ing => addIngredientRow(ing.name, ing.qty));
-    editorPanel.classList.add("open");
-    editorPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-
-  document.getElementById("btn-save-recipe").addEventListener("click", () => {
-    const name = document.getElementById("edit-item-name").value.trim();
-    const icon = document.getElementById("edit-item-icon").value.trim() || "🌱";
-    if (!name) { alert("Isi nama item dulu ya."); return; }
-
-    const ingredients = [];
-    ingredientRows.querySelectorAll(".ingredient-row").forEach(row => {
-      const iName = row.querySelector('[name="ing-name"]').value.trim();
-      const iQty = Math.max(1, parseInt(row.querySelector('[name="ing-qty"]').value) || 1);
-      if (iName) ingredients.push({ name: iName, qty: iQty });
-    });
-
-    recipes[name] = { icon, ingredients };
-    saveRecipes();
-    refreshRecipeSelect();
-    refreshRecipeListButtons();
-    recipeSelect.value = name;
-    renderTree();
-    alert(`Resep "${name}" disimpan!`);
-  });
-
-  document.getElementById("btn-delete-recipe").addEventListener("click", () => {
-    const name = document.getElementById("edit-item-name").value.trim();
-    if (!name || !recipes[name]) { alert("Item ini belum ada di daftar resep."); return; }
-    if (!confirm(`Hapus resep "${name}"?`)) return;
-    delete recipes[name];
-    saveRecipes();
-    refreshRecipeSelect();
-    refreshRecipeListButtons();
-    clearForm();
-    treeOutput.innerHTML = "";
-    shoppingWrap.style.display = "none";
-  });
-
-  refreshRecipeSelect();
-  refreshRecipeListButtons();
-  if (recipeSelect.options.length > 0) {
-    recipeSelect.value = Object.keys(recipes).sort()[0];
-    renderTree();
-  }
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
